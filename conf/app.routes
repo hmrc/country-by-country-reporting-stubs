@@ -1,3 +1,4 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.countrybycountryreportingstubs.controllers.MicroserviceHelloWorldController.hello
+POST        /cbc/dct70d/v1                              controllers.SubscriptionController.readSubscription()
+POST        /cbc/dct05/v1                               controllers.SubscriptionController.updateSubscription()
