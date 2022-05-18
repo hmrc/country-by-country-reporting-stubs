@@ -1,0 +1,11 @@
+{
+  "updateSubscriptionForCBCResponse": {
+    "responseCommon": {
+      "status": "OK",
+      "processingDate": "2020-09-09T11:23:12Z"
+    },
+    "responseDetail": {
+      "subscriptionID": "YUDD7483202"
+    }
+  }
+}
