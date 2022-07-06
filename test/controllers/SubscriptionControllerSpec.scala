@@ -104,7 +104,7 @@ class SubscriptionControllerSpec extends AnyWordSpec with Matchers with GuiceOne
       status(result) shouldBe SERVICE_UNAVAILABLE
     }
   }
-  
+
   "POST to updateSubscription" should {
     "return 403" in {
       val result = route(app, fakeRequestWithJsonBody.withBody(jsonBody("XACBC0000123777"))).value
