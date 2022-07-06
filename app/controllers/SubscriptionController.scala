@@ -26,37 +26,31 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton()
-class SubscriptionController @Inject()(cc: ControllerComponents, authFilter: AuthActionFilter) extends BackendController(cc) with StubResource {
+class SubscriptionController @Inject() (cc: ControllerComponents, authFilter: AuthActionFilter) extends BackendController(cc) with StubResource {
 
-  def readSubscription(): Action[JsValue] = Action(parse.json) {
-    implicit request =>
-      val json     = request.body
-      val idNumber = (json \ "displaySubscriptionForCBCRequest" \ "requestDetail" \ "IDNumber").as[String]
+  def readSubscription(): Action[JsValue] = Action(parse.json) { implicit request =>
+    val json     = request.body
+    val idNumber = (json \ "displaySubscriptionForCBCRequest" \ "requestDetail" \ "IDNumber").as[String]
 
-      idNumber match {
-        case "XACBC0000123777" =>
-          Ok(
-            findResource(s"/resources/v1/safe/cbc/displayExistingUserSubscription.json")
-              .map(
-                r => replaceSubscriptionId(r, "XACBC0000123777")
-              )
-              .get
-          )
-        case "XACBC0000123778" =>
-          Ok(
-            findResource(s"/resources/v1/safe/cbc/displaySubscription.json")
-              .map(
-                r => replaceSubscriptionId(r, "XACBC0000123778")
-              )
-              .get
-          )
-        case _ => ServiceUnavailable(findResource(s"/resources/error/ServiceUnavailable.json").get)
-      }
+    idNumber match {
+      case "XACBC0000123777" =>
+        Ok(
+          findResource(s"/resources/v1/safe/cbc/displayPreOnlineServiceUserSubscription.json")
+            .map(r => replaceSubscriptionId(r, "XACBC0000123777"))
+            .get
+        )
+      case "XACBC0000123778" =>
+        Ok(
+          findResource(s"/resources/v1/safe/cbc/displayPostOnlineServiceUserSubscription.json")
+            .map(r => replaceSubscriptionId(r, "XACBC0000123778"))
+            .get
+        )
+      case _ => ServiceUnavailable(findResource(s"/resources/error/ServiceUnavailable.json").get)
+    }
   }
 
   private def replaceSubscriptionId(response: String, subscriptionId: String): String =
     response.replace("[subscriptionId]", subscriptionId)
-
 
   def updateSubscription(): Action[JsValue] = (Action(parse.json) andThen authFilter).async { implicit request =>
     val json     = request.body
