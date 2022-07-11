@@ -45,6 +45,12 @@ class SubscriptionController @Inject() (cc: ControllerComponents, authFilter: Au
             .map(r => replaceSubscriptionId(r, "XACBC0000123778"))
             .get
         )
+      case "XACBC0000123779" =>
+        Ok(
+          findResource(s"/resources/v1/safe/cbc/displayPostOnlineServiceUserSingleContactSubscription.json")
+            .map(r => replaceSubscriptionId(r, "XACBC0000123779"))
+            .get
+        )
       case _ => ServiceUnavailable(findResource(s"/resources/error/ServiceUnavailable.json").get)
     }
   }
@@ -59,6 +65,7 @@ class SubscriptionController @Inject() (cc: ControllerComponents, authFilter: Au
     idNumber match {
       case "XACBC0000123777" => jsonAsyncResourceResponse(s"/resources/subscription/updateSubscriptionResponseXACBC0000123777.json")
       case "XACBC0000123778" => jsonAsyncResourceResponse(s"/resources/subscription/updateSubscriptionResponseXACBC0000123778.json")
+      case "XACBC0000123779" => jsonAsyncResourceResponse(s"/resources/subscription/updateSubscriptionResponseXACBC0000123779.json")
       case _                 => Future.successful(NotFound)
     }
   }
